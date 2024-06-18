@@ -1,0 +1,48 @@
+<div class="py-5">
+  <h2 id="web-subtitle">Iniciar Sesión</h2>
+  <hr class="w-50" />
+
+  <form>
+    <div class="form-group">
+      <div class="form-group">
+        <label>Email</label>
+        <input class="form-control w-50 m-auto" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input class="form-control w-50 m-auto" type="password" />
+      </div>
+    </div>
+    <button class="btn btn-success mb-3">Ingresar</button>
+    <p>¿Aún no tienes cuenta? <a href="/registro">Regístrate</a></p>
+  </form>
+</div>
+<a href="/">Volver al Home</a>
+
+<script>
+
+  const form = document.querySelector("form")
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault()
+
+    let [email, password] = document.querySelectorAll("input")
+
+    email = email.value
+    password = password.value
+
+    try {
+      const { data: token } = await axios.post("/login", { email, password })
+      window.location = `/Perfil?token=${token}`
+    } catch ({ response }) {
+  const { data } = response;
+  let errorMessage = data.error;
+  if (!errorMessage) {
+    errorMessage = data.message || 'Verifica tu mail o password e intentalo nuevamente';
+  }
+
+  alert(errorMessage);
+  
+}
+  })
+</script>
